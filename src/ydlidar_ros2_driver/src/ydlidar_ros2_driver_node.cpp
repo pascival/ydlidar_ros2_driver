@@ -184,7 +184,7 @@ int main(int argc, char *argv[]) {
     RCLCPP_ERROR(node->get_logger(), "%s\n", laser.DescribeError());
   }
   
-  auto laser_pub = node->create_publisher<sensor_msgs::msg::LaserScan>("scan", rclcpp::SensorDataQoS());
+  auto laser_pub = node->create_publisher<sensor_msgs::msg::LaserScan>("lidar_scan", rclcpp::SensorDataQoS());
   auto pc_pub = node->create_publisher<sensor_msgs::msg::PointCloud>("point_cloud", rclcpp::SensorDataQoS());
   
   auto stop_scan_service =
@@ -243,10 +243,10 @@ int main(int argc, char *argv[]) {
       for(size_t i=0; i < scan.points.size(); i++) {
         int index = std::ceil((scan.points[i].angle - scan.config.min_angle)/scan.config.angle_increment);
         if(index >=0 && index < size) {
-	  if (scan.points[i].range >= scan.config.min_range) {
-            scan_msg->ranges[index] = scan.points[i].range;
-            scan_msg->intensities[index] = scan.points[i].intensity;
-	  }
+          if (scan.points[i].range >= scan.config.min_range) {
+                  scan_msg->ranges[index] = scan.points[i].range;
+                  scan_msg->intensities[index] = scan.points[i].intensity;
+          }
         }
 
 	if (scan.points[i].range >= scan.config.min_range &&
